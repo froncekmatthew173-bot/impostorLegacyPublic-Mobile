@@ -50,8 +50,8 @@
             },
             {
                 "name": "openfl",
-                "link": "https://github.com/FunkinCrew/openfl",
-                "branch": "a85b45f21c7e1a4c19663a193bf4ea961faf0dfa"
+                "link": "https://github.com/ArkoseLabsOfficial/openfl-lily",
+                "branch": "main"
             },
             {
                 "name": "hxdiscord_rpc",
