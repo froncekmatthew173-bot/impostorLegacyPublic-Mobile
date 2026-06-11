@@ -34,8 +34,13 @@ class MobileUtil {
 
 	public static function initDirectory():String {
 		var daPath:String = '';
-		daPath = #if android Path.addTrailingSlash("/sdcard/.ImpostorLegacy"); #elseif ios lime.system.System.documentsDirectory #end;
-		currentDirectory = daPath;
+		#if android
+        daPath = Path.addTrailingSlash("/sdcard/.ImpostorLegacy");
+        #elseif ios
+        daPath = lime.system.System.documentsDirectory;
+        #else
+        daPath = "";
+        #end
 
 		try
 		{
