@@ -107,7 +107,7 @@ class MobileUtil
 			case 'EXTERNAL_DATA':
 				daPath = "/sdcard/Android/data/com.motorfrog.impostor";
 			default: //technically not needed but here for safety -ArkoseLabs
-				if (daPath == null || daPath == '') daPath = "/sdcard/Android/data/com.motorfrog.impostor/files";
+				if (daPath == null || daPath == '') daPath = "/sdcard/.ImpostorLegacy";
 		}
 		daPath = Path.addTrailingSlash(daPath);
 		currentDirectory = daPath;
