@@ -10,7 +10,7 @@
             {
                 "name": "flixel-addons",
                 "link": "https://github.com/FunkinCrew/flixel-addons",
-                "branch": "187f93b34f93c6a405d634a42913c745e443463a"
+                "branch": "8595a752f0f95ee1b13f96d368b6d83b50e1d257"
             },
             {
                 "name": "flixel-ui",
@@ -46,7 +46,7 @@
             {
                 "name": "lime",
                 "link": "https://github.com/FunkinCrew/lime",
-                "branch": "b86a6d533c53ae39dc302bbf67a8d348dfb14b14"
+                "branch": "6421de16b9dfa4fb55c19f12db65d392a57585c8"
             },
             {
                 "name": "openfl",
@@ -60,7 +60,7 @@
             {
                 "name": "haxeui-flixel",
                 "link": "https://github.com/haxeui/haxeui-flixel",
-                "branch": "b899a4c7d7318c5ff2b1bb645fbc73728fad1ac9"
+                "branch": "100f2c96beab619cfe72c567a058c41c71e3e998"
             },
             {
                 "name": "haxeui-core",
@@ -86,6 +86,11 @@
                 "name": "json2object",
                 "link": "https://github.com/FunkinCrew/json2object",
                 "branch": "a8c26f18463c98da32f744c214fe02273e1823fa"
+            },
+            {
+                "name": "extension-androidtools",
+                "link": "https://github.com/LimeExtensions/extension-androidtools",
+                "branch": "main"
             },
             {
                 "name": "hxjsonast",
