@@ -1,17 +1,17 @@
 package mobile.backend;
 
 #if android
-import android.os.Build.VERSION;
-import android.os.Environment;
-import android.Permissions;
-import android.Settings;
+import extension.androidtools.os.Build.VERSION;
+import extension.androidtools.os.Environment;
+import extension.androidtools.Permissions;
+import extension.androidtools.Settings;
 #end
 
 import lime.system.System;
 import lime.app.Application;
 import openfl.Assets;
-import haxe.io.Bytes;
-import haxe.io.Path;
+import .Bytes;
+import .Path;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -33,13 +33,8 @@ class MobileUtil {
 
 	public static function initDirectory():String {
 		var daPath:String = '';
-		#if android
-        daPath = Path.addTrailingSlash("/sdcard/.ImpostorLegacy");
-        #elseif ios
-        daPath = lime.system.System.documentsDirectory;
-        #else
-        daPath = "";
-        #end
+		daPath = #if android Path.addTrailingSlash("/sdcard/.ImpostorLegacy"); #elseif ios lime.system.System.documentsDirectory #end;
+		currentDirectory = daPath;
 
 		try
 		{
