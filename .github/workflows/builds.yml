@@ -1,0 +1,151 @@
+name: Build All Platforms
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  setup:
+    name: Setup Environment
+    runs-on: ubuntu-latest
+    outputs:
+      haxe-version: ${{ steps.haxe.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Haxe
+        id: haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.3.3
+
+      - name: Install Haxelib Dependencies
+        run: |
+          haxelib setup ~/.haxelib
+          haxelib install lime 8.1.2 --quiet
+          haxelib install openfl 9.3.3 --quiet
+          haxelib install hxcpp 4.3.2 --quiet
+          haxelib run lime setup
+          haxelib run lime config
+
+  windows:
+    name: Windows Build
+    needs: setup
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: ${{ needs.setup.outputs.haxe-version }}
+
+      - name: Build Windows
+        run: |
+          haxelib run lime build windows -release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-Build
+          path: export/release/windows/bin
+
+  linux:
+    name: Linux Build
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: ${{ needs.setup.outputs.haxe-version }}
+
+      - name: Install Linux Deps
+        run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev libxcursor-dev
+
+      - name: Build Linux
+        run: haxelib run lime build linux -release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Linux-Build
+          path: export/release/linux/bin
+
+  macos:
+    name: macOS Build
+    needs: setup
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: ${{ needs.setup.outputs.haxe-version }}
+
+      - name: Build macOS
+        run: haxelib run lime build mac -release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS-Build
+          path: export/release/macos/bin
+
+  ios:
+    name: iOS Build
+    needs: setup
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: ${{ needs.setup.outputs.haxe-version }}
+
+      - name: Patch Lime for iOS 17+
+        run: |
+          sed -i '' 's/return systemInfo.machine;/return strdup(systemInfo.machine);/' $(haxelib path lime | head -n 1)/project/src/ios/System.mm
+          sed -i '' 's/UTF8String]/UTF8String] copy]/' $(haxelib path lime | head -n 1)/project/src/ios/System.mm
+
+      - name: Build iOS
+        run: haxelib run lime build ios -release -Dsource-header
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS-Build
+          path: export/release/ios/build
+
+  android:
+    name: Android Build
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: ${{ needs.setup.outputs.haxe-version }}
+
+      - name: Install Android SDK/NDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install NDK 25.2
+        run: sdkmanager "ndk;25.2.9519653"
+
+      - name: Build Android
+        run: haxelib run lime build android -release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android-Build
+          path: export/release/android/bin
