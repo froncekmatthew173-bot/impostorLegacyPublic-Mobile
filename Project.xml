@@ -89,7 +89,11 @@
 	<haxelib name="grig.audio"/>
 	<haxelib name="json2object"/>
 	<haxelib name="json5hx"/>
+<<<<<<< HEAD
     <haxelib name="extension-androidtools"/>
+=======
+  <haxelib name="extension-androidtools"/>
+>>>>>>> 30e741e5510e00c5ab95bbf0577272f02736b737
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED" version="1.2.4"/>
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 
