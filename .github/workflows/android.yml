@@ -1,1 +1,45 @@
+name: Build Psych Online Android
 
+on: workflow_dispatch
+jobs:
+  buildAndroid:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.6
+
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@main
+        id: setup-ndk
+        with:
+          ndk-version: r27c
+          add-to-path: false
+ 
+      - name: Install Libraries
+        run: |
+          haxelib install hxcpp > /dev/null
+          haxelib install hxpkg
+          haxelib run hxpkg install
+
+      - name: Configure Android
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
+          haxelib run lime config JAVA_HOME $JAVA_HOME
+          haxelib run lime config ANDROID_SETUP true 
+
+      - name: Compile
+        run: haxelib run lime build android -D DLC -final
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: androidBuild
+          path: 'export/release/android/bin/app/build/outputs/apk
