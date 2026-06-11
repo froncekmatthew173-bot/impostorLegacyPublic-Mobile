@@ -27,6 +27,11 @@ import funkin.api.DiscordClient;
 import hxvlc.flixel.*;
 #end
 
+#if mobile
+import mobile.*;
+import mobile.backend.*;
+#end
+
 import Init;
 
 import funkin.Paths;
