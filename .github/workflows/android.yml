@@ -28,8 +28,7 @@ jobs:
         run: |
           haxelib install hxp --quiet
           haxelib install format --quiet
-          haxelib run lime setup android
-          haxelib run lime rebuild android
+          haxelib run lime rebuild cpp -no-wayland
 
       - name: Configure Android
         run: |
