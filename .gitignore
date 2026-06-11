@@ -5,6 +5,7 @@ dump/*
 # enoiugh git ignores guys
 # yeah ok sure
 **/content/*
+!content/securitydlc
 
 ### Mac
 .DS_Store
