@@ -640,7 +640,9 @@ class ClientPrefs
 	{
 		discordRPC = now;
 		
+        #if desktop
 		funkin.api.DiscordClient.check();
+        #end
 		
 		return now;
 	}
