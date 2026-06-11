@@ -45,13 +45,13 @@
             },
             {
                 "name": "lime",
-                "link": "https://github.com/ArkoseLabsOfficial/lime",
-                "branch": "main"
+                "link": "https://github.com/FunkinCrew/lime",
+                "branch": "6421de16b9dfa4fb55c19f12db65d392a57585c8"
             },
             {
                 "name": "openfl",
                 "link": "https://github.com/FunkinCrew/openfl",
-                "branch": "77cc41a2ea09a1fcafcc7f04391757344b53bbad"
+                "branch": "a85b45f21c7e1a4c19663a193bf4ea961faf0dfa"
             },
             {
                 "name": "hxdiscord_rpc",
@@ -60,7 +60,7 @@
             {
                 "name": "haxeui-flixel",
                 "link": "https://github.com/haxeui/haxeui-flixel",
-                "branch": "master"
+                "branch": "100f2c96beab619cfe72c567a058c41c71e3e998"
             },
             {
                 "name": "haxeui-core",
