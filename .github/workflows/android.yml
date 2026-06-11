@@ -1,4 +1,4 @@
-name: Build Psych Online Android
+name: Build Android
 
 on: workflow_dispatch
 jobs:
