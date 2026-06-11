@@ -10,7 +10,7 @@
             {
                 "name": "flixel-addons",
                 "link": "https://github.com/FunkinCrew/flixel-addons",
-                "branch": "8595a752f0f95ee1b13f96d368b6d83b50e1d257"
+                "branch": "187f93b34f93c6a405d634a42913c745e443463a"
             },
             {
                 "name": "flixel-ui",
@@ -45,8 +45,8 @@
             },
             {
                 "name": "lime",
-                "link": "https://github.com/th2l-devs/lime",
-                "branch": "main"
+                "link": "https://github.com/FunkinCrew/lime",
+                "branch": "b86a6d533c53ae39dc302bbf67a8d348dfb14b14"
             },
             {
                 "name": "openfl",
@@ -60,7 +60,7 @@
             {
                 "name": "haxeui-flixel",
                 "link": "https://github.com/haxeui/haxeui-flixel",
-                "branch": "100f2c96beab619cfe72c567a058c41c71e3e998"
+                "branch": "b899a4c7d7318c5ff2b1bb645fbc73728fad1ac9"
             },
             {
                 "name": "haxeui-core",
