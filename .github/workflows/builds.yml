@@ -6,100 +6,138 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup:
-    name: Setup Environment
+# This is a basic workflow to help you get started with Actions
+
+name: Build
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  # push:
+  #   branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+  # For release builds
+  workflow_call:
+    inputs:
+      buildFlags:
+        required: false
+        type: string
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  buildLinux:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    outputs:
-      haxe-version: ${{ steps.haxe.outputs.version }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-      - name: Setup Haxe
-        id: haxe
-        uses: krdlab/setup-haxe@v1
+      - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.3
-
-      - name: Install Haxelib Dependencies
+          haxe-version: 4.3.7
+      # Runs a set of commands using the runners shell
+      - name: install libvlc
         run: |
-          haxelib setup ~/.haxelib
-          haxelib install lime 8.1.2 --quiet
-          haxelib install openfl 9.3.3 --quiet
-          haxelib install hxcpp 4.3.2 --quiet
-          haxelib run lime setup
-          haxelib run lime config
-
-  windows:
-    name: Windows Build
-    needs: setup
+            sudo apt-get install vlc libvlc-dev libvlccore-dev vlc-bin
+      - name: Install libraries
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null
+          haxelib install hxpkg
+          haxelib run hxpkg install
+      - name: Compile
+        run: haxelib run lime build Project.xml linux -D ${{ inputs.buildFlags }}
+      - name: Publish Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: nmv-linux
+          path: 'export/release/linux/bin' 
+  buildWindows:
     runs-on: windows-latest
+    
     steps:
-      - uses: actions/checkout@v4
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2.3.0
 
-      - name: Setup Haxe
-        uses: krdlab/setup-haxe@v1
+      - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: ${{ needs.setup.outputs.haxe-version }}
-
-      - name: Build Windows
+          haxe-version: 4.3.7
+      # Runs a set of commands using the runners shell
+      - name: Install libraries
         run: |
-          haxelib run lime build windows -release
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+          haxelib setup C:/haxelib
+          haxelib install hxcpp > nul
+          haxelib install hxpkg
+          haxelib run hxpkg install
+      - name: Compile
+        run: haxelib run lime build windows -D ${{ inputs.buildFlags }}
+      - name: Publish Artifact
+        uses: actions/upload-artifact@main
         with:
-          name: Windows-Build
+          name: nmv-windows
           path: export/release/windows/bin
+  buildMacIntel:
+    runs-on: macos-15
 
-  linux:
-    name: Linux Build
-    needs: setup
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@main
 
-      - name: Setup Haxe
-        uses: krdlab/setup-haxe@v1
+      - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: ${{ needs.setup.outputs.haxe-version }}
-
-      - name: Install Linux Deps
-        run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev libxcursor-dev
-
-      - name: Build Linux
-        run: haxelib run lime build linux -release
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+          haxe-version: 4.3.7
+      # Runs a set of commands using the runners shell
+      - name: Install libraries
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hxpkg
+          haxelib run hxpkg install
+      - name: Compile
+        run: |
+          haxelib run lime build mac -64 -D ${{ inputs.buildFlags || 'commit' }} -D HXCPP_M64
+      - name: Publish Artifact
+        uses: actions/upload-artifact@main
         with:
-          name: Linux-Build
-          path: export/release/linux/bin
-
-  macos:
-    name: macOS Build
-    needs: setup
-    runs-on: macos-13
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Haxe
-        uses: krdlab/setup-haxe@v1
-        with:
-          haxe-version: ${{ needs.setup.outputs.haxe-version }}
-
-      - name: Build macOS
-        run: haxelib run lime build mac -release
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: macOS-Build
+          name: nmv-macIntel
           path: export/release/macos/bin
 
+  buildMacArm:
+    runs-on: macos-15
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@main
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.7
+      # Runs a set of commands using the runners shell
+      - name: Install libraries
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hxpkg
+          haxelib run hxpkg install
+      - name: Compile
+        run: |
+          haxelib run lime build mac -arm64 -D ${{ inputs.buildFlags }} -D HXCPP_ARM64
+      - name: Publish Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: nmv-macArm
+          path: export/release/macos/bin
   ios:
     name: iOS Build
-    needs: setup
+
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
@@ -107,7 +145,15 @@ jobs:
       - name: Setup Haxe
         uses: krdlab/setup-haxe@v1
         with:
-          haxe-version: ${{ needs.setup.outputs.haxe-version }}
+          haxe-version: 4.3.7
+
+      # Runs a set of commands using the runners shell
+      - name: Install libraries
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hxpkg
+          haxelib run hxpkg install
 
       - name: Patch Lime for iOS 17+
         run: |
@@ -125,7 +171,7 @@ jobs:
 
   android:
     name: Android Build
-    needs: setup
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -133,7 +179,15 @@ jobs:
       - name: Setup Haxe
         uses: krdlab/setup-haxe@v1
         with:
-          haxe-version: ${{ needs.setup.outputs.haxe-version }}
+          haxe-version: 4.3.7
+
+      # Runs a set of commands using the runners shell
+      - name: Install libraries
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hxpkg
+          haxelib run hxpkg install
 
       - name: Install Android SDK/NDK
         uses: android-actions/setup-android@v3
