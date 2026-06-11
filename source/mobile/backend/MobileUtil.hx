@@ -33,7 +33,7 @@ class MobileUtil {
 
 	public static function initDirectory():String {
 		var daPath:String = '';
-		daPath = Path.addTrailingSlash("/sdcard/.ImpostorLegacy");
+		daPath = Path.addTrailingSlash(#if android "/sdcard/.ImpostorLegacy" #elseif ios lime.system.System.documentsDirectory #end);
 		currentDirectory = daPath;
 
 		try
