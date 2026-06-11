@@ -50,7 +50,8 @@
             },
             {
                 "name": "openfl",
-                "version": "9.3.3"
+                "link": "https://github.com/FunkinCrew/openfl",
+                "branch": "a85b45f21c7e1a4c19663a193bf4ea961faf0dfa"
             },
             {
                 "name": "hxdiscord_rpc",
