@@ -109,9 +109,9 @@ class Mods
 	 */
 	static function ensureModsListExists()
 	{
-		if (!FunkinAssets.exists('modsList.txt'))
+		if (!FunkinAssets.exists(#if mobile MobileUtil.getDirectory() + #end 'modsList.txt'))
 		{
-			File.saveContent('modsList.txt', '');
+			File.saveContent(#if mobile MobileUtil.getDirectory() + #end 'modsList.txt', '');
 		}
 	}
 	
