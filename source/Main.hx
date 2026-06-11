@@ -38,6 +38,15 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+
+		#if mobile
+		#if android
+		MobileUtil.getPermissions();
+		MobileUtil.initDirectory();
+		#end
+		Sys.setCwd(MobileUtil.getAssetDirectory());
+		MobileUtil.copyAssets();
+    #end
 		
 		funkin.Mods.updateModList();
 		funkin.Mods.loadTopMod();
