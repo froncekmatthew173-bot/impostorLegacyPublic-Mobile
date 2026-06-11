@@ -24,13 +24,13 @@ jobs:
           haxelib install hxcpp > /dev/null
           haxelib install hxpkg
           haxelib run hxpkg install
-      - name: Rebuild Lime
-        run: |
-          haxelib install hxp --quiet
-          haxelib install format --quiet
-          sudo apt-get update
-          sudo apt-get install -y libwayland-dev wayland-protocols
-          haxelib run lime rebuild cpp
+     # - name: Rebuild Lime
+     #   run: |
+     #    haxelib install hxp --quiet
+     #     haxelib install format --quiet
+     #    sudo apt-get update
+     #    sudo apt-get install -y libwayland-dev wayland-protocols
+     #     haxelib run lime rebuild cpp
 
       - name: Configure Android
         run: |
