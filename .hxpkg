@@ -50,8 +50,7 @@
             },
             {
                 "name": "openfl",
-                "link": "https://github.com/CodenameCrew/cne-openfl",
-                "branch": "old"
+                "version": "9.3.3"
             },
             {
                 "name": "hxdiscord_rpc",
