@@ -46,7 +46,7 @@ class Main extends Sprite
 		#end
 		Sys.setCwd(MobileUtil.getAssetDirectory());
 		MobileUtil.copyAssets();
-    #end
+        #end
 		
 		funkin.Mods.updateModList();
 		funkin.Mods.loadTopMod();
