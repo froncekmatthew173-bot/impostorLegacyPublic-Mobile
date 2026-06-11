@@ -1,4 +1,4 @@
-name: Build Android
+name: Build Mobile
 
 on: workflow_dispatch
 jobs:
@@ -81,4 +81,48 @@ jobs:
         with:
           name: ImpostorLegacy (Android)
           path: export/release/android/bin/app/build/outputs/apk/*
+          if-no-files-found: error
+  iOS:
+    name: Build iOS
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6.0.2
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v2.1.0
+        with:
+          haxe-version: 4.3.7
+
+      - name: Install Haxelib + Lime (Pinned)
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp --quiet
+          haxelib install hxpkg --quiet
+          haxelib run hxpkg install
+
+          rm -rf .haxelib/lime
+          git clone https://github.com/FunkinCrew/lime .haxelib/lime/git
+          git -C .haxelib/lime/git checkout 6421de16b9dfa4fb55c19f12db65d392a57585c8
+          git -C .haxelib/lime/git submodule update --init --recursive --force
+          haxelib dev lime .haxelib/lime/git
+
+      - name: Rebuild Lime (iOS)
+        run: |
+          haxelib run lime rebuild ios -release
+          if [ ! -f .haxelib/lime/git/ndll/iPhone/liblime.iphoneos.a ]; then
+            echo "ERROR: Missing iOS Lime static library"
+            exit 1
+          fi
+
+      - name: Compile iOS
+        run: |
+          haxelib run lime build ios -final -D DLC
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: ImpostorLegacy (iOS)
+          path: export/release/ios/*
           if-no-files-found: error
