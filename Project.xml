@@ -28,7 +28,7 @@
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"/>
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false"/>
 
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
@@ -89,7 +89,7 @@
 	<haxelib name="grig.audio"/>
 	<haxelib name="json2object"/>
 	<haxelib name="json5hx"/>
-
+  <haxelib name="extension-androidtools"/>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED" version="1.2.4"/>
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 
