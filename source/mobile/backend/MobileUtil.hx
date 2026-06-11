@@ -11,8 +11,8 @@ import extension.androidtools.Settings;
 import lime.system.System;
 import lime.app.Application;
 import openfl.Assets;
-import .Bytes;
-import .Path;
+import haxe.io.Bytes;
+import haxe.io.Path;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
