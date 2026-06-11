@@ -69,7 +69,7 @@ class MobileUtil {
 	}
 
 	public static inline function getAssetDirectory():String
-		return #if android haxe.io.Path.addTrailingSlash("/sdcard/Android/data/com.motorfrog.impostor/files") #elseif ios lime.system.System.documentsDirectory #else Sys.getCwd() #end;
+		return #if android haxe.io.Path.addTrailingSlash("/sdcard/Android/media/com.motorfrog.impostor/files") #elseif ios lime.system.System.documentsDirectory #else Sys.getCwd() #end;
 
   public static function getDirectory():String
 	{
