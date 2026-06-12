@@ -1,16 +1,5 @@
 package mobile.backend;
 
-#if android
-import extension.androidtools.content.Context as AndroidContext;
-import extension.androidtools.widget.Toast as AndroidToast;
-import extension.androidtools.os.Environment as AndroidEnvironment;
-import extension.androidtools.Permissions as AndroidPermissions;
-import extension.androidtools.Settings as AndroidSettings;
-import extension.androidtools.Tools as AndroidTools;
-import extension.androidtools.os.Build.VERSION as AndroidVersion;
-import extension.androidtools.os.Build.VERSION_CODES as AndroidVersionCode;
-#end
-
 import lime.system.System as LimeSystem;
 import haxe.io.Path;
 import haxe.Exception;
@@ -126,12 +115,12 @@ class MobileUtil
 
 		try
 		{
-			if (!FileSystem.exists(MobileUtil.getDirectory() + "content/"))
-				FileSystem.createDirectory(MobileUtil.getDirectory() + "content/");
+			if (!FileSystem.exists(MobileUtil.getDirectory() + "mods/"))
+				FileSystem.createDirectory(MobileUtil.getDirectory() + "mods/");
 		}
 		catch (e:Dynamic)
 		{
-			Application.current.window.alert("Looks like you doesn't have directory named\n" + MobileUtil.getDirectory() + "content/" + 
+			Application.current.window.alert("Looks like you doesn't have directory named\n" + MobileUtil.getDirectory() + "mods/" + 
 			"\nBut maybe this couldn't be right, android loves to give errors like this\nPress OK & let's see what happens\nCurrent Error You Got:\n" + e, "Warning!");
 			//lime.system.System.exit(1);
 		}
